@@ -1,38 +1,60 @@
-.App {
-  text-align: center;
+
+.iconButton
+{
+  transition: all 0.2 !important;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+
+.iconButton:hover
+{
+
+background-color: #c5c5c5 !important;
+box-shadow: 0px 7px 7px rgba(0,0,0,4);
+
+}
+/*
+.todoCard :hover
+{
+
+padding-top: 10px;
+padding-bottom: 10px;
+
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.todoCard
+{
+  transition: all 0.2s !important;
+  box-shadow: 0px 7px 7px rgba(0,0,0,4);
+}
+*/
+
+
+/*
+==== CUSTOM FONTS ====
+*/
+/*
+@font-face {
+  font-family: Alexandria;
+  src: url("../public/Fonts/Alexandria-Black.ttf");
+  font-weight: bold;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+@font-face {
+  font-family: Alexandria;
+  src: url("../public/Fonts/Alexandria-ExtraLight.ttf");
+  font-weight: 900;
 }
 
-.App-link {
-  color: #61dafb;
+@font-face {
+  font-family: Alexandria;
+  src: url("../public/Fonts/Alexandria-Medium.ttf");
+  font-weight: 300;
 }
+*/
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@font-face {
+  font-family: Alexandria;
+  src: url("../public/Fonts/Alexandria-Medium.ttf");
+  font-weight: 300;
 }
