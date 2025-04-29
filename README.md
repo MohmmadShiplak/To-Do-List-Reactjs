@@ -1,6 +1,11 @@
 
 # TodoApp - ReactJS
 
+A simple yet powerful Todo application built with ReactJS that allows you to manage your tasks efficiently. This app includes features like adding, updating, deleting tasks, and filtering them based on their completion status. All tasks are persisted in the browser's local storage.
+
+
+
+
 
 
 
