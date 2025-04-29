@@ -18,26 +18,57 @@ import Todo from "./Todo"
 import TextField from '@mui/material/TextField';
 import { Height } from '@mui/icons-material';
 import { v4 as uuidv4 } from 'uuid';
-import {  useContext,useState,useEffect } from 'react';
-import { TodosContext } from '../contexts/TodosContext';
+import {  useState,useEffect,useMemo,useReducer } from 'react';
+import  {useTodos}  from '../contexts/TodosContext';
+import { ToastContext, useToast } from '../contexts/ToastContext';
+import todosReducer from '../reducers/todosReducer'
+
+//Dialog 
+
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 
 
 export default function TodoList()
 {
-  const { todos, setTodoes } = useContext(TodosContext);
+  const {todos, dispatch } = useTodos();
+  //const { todo2, setTodoes } = useContext(TodosContext);
+  const {showHideToast} =useToast()
+  const [dialogTodo, setDialogTodo] = useState(null);
   const [TitleInput, setTitleInput] = useState("");
   const [displayedTodoesType,setdisplayedTodoesType]=useState("all")
-
+  const [showdeleteDialog,setShowdeleteDialog]=useState(false);
+  const [showUpdateDialog,setShowUpdateDialog]=useState(false);
 
 //filteration arrays 
 
-const CompletedTodoes =todos.filter((todo)=>{
-  return todo.isCompleted 
-})
+const CompletedTodoes =useMemo(()=>{
+  return todos.filter((todo)=>{
+    console.log("calling completed todo")
+    return   todo.isCompleted
+  })
 
-const NotCompletedTodoes =todos.filter((todo)=>{
-  return !todo.isCompleted 
-})
+},[todos])
+
+
+
+
+
+const NotCompletedTodoes =useMemo(()=>{
+
+  return todos.filter((todo)=>{
+
+    console.log("calling not completed todo")
+    return !todo.isCompleted 
+  })
+
+},[todos])
+
+
 
 let todoesTobeRendered=todos
 
@@ -53,13 +84,72 @@ else
 {
   todoesTobeRendered=todos
 }
+// handle deletes 
 
 
+function handleDeleteDialogClose()
+{
+setShowdeleteDialog(false)
+}
+
+
+function openDeleteDialog(todo)
+{
+
+setDialogTodo(todo)
+setShowdeleteDialog(true)
+
+}
+
+function openUpdateDialog(todo)
+{
+setDialogTodo(todo)
+setShowUpdateDialog(true)
+}
+
+
+function handleUpdateDialogClose()
+{
+
+setShowUpdateDialog(false)
+}
+
+
+
+
+
+
+
+function handleDeleteConfirm()
+{
+
+  dispatch({type:"deleted",payload:dialogTodo})
+
+setShowdeleteDialog(false)
+showHideToast("todo deleted sucessfully")
+}
+
+function handleUpdateConfirm()
+{
+
+  
+dispatch({type :"updated", payload :dialogTodo})
+
+
+  setShowUpdateDialog(false);
+
+  showHideToast("todo updated sucessfully")
+}
+
+
+
+
+// handle deletes 
 
 
   // Safely handle mapping
   const Todojsx = todoesTobeRendered.map((todo) => (
-    <Todo key={todo.id}  todo={todo} />
+    <Todo key={todo.id}  todo={todo} showdelete={openDeleteDialog} showupdate={openUpdateDialog} />
   ));
   
 
@@ -73,16 +163,8 @@ else
   */
 
   useEffect(() => {
-    try {
-      const storedTodos = JSON.parse(localStorage.getItem("todos"));
-      if (Array.isArray(storedTodos)) {
-        setTodoes(storedTodos);
-      }
-    } catch (error) {
-      console.error("Failed to load todos", error);
-      setTodoes([]);
-    }
-  }, [setTodoes]);
+    dispatch ({type: "get"})
+  });
   
 
 
@@ -91,16 +173,11 @@ else
 
 
   function handleAddClick() {
-    const newTodo = {
-      id: uuidv4(),
-      title: TitleInput,
-      details: "",
-      isCompleted: false,
-    };
-    const updatedTodoes = [...(todos || []), newTodo]; // Handle null case
-    setTodoes(updatedTodoes);
-    localStorage.setItem("todos", JSON.stringify(updatedTodoes));
+  
+dispatch ({type:"Added", payload:{title :TitleInput}} )
+
     setTitleInput("");
+    showHideToast("todo added sucessfully :-)")
   }
 
   function changeDisplayedType(e)
@@ -119,6 +196,102 @@ setTodoes(StorageTodos)
 
 
   return (
+<>
+  {/*delete dialog */}
+
+    <Dialog
+  
+    open={showdeleteDialog}
+  onClose={handleDeleteDialogClose}
+    aria-labelledby="alert-dialog-title"
+    aria-describedby="alert-dialog-description"
+  >
+    <DialogTitle id="alert-dialog-title">
+    Are you sure you want to delete?
+    </DialogTitle>
+    <DialogContent>
+      <DialogContentText id="alert-dialog-description">
+      Can you undo the deletion after completing it?
+      </DialogContentText>
+    </DialogContent>
+    <DialogActions>
+      <Button onClick={handleDeleteDialogClose}>Closing</Button>
+      <Button onClick={handleDeleteConfirm} autoFocus>
+      Confirm deletion
+      </Button>
+    </DialogActions>
+  </Dialog>
+  {/*===delete dialog */}
+
+ {/*update dialog */}
+ <Dialog
+  
+    open={showUpdateDialog}
+  onClose={handleUpdateDialogClose}
+    aria-labelledby="alert-dialog-title"
+    aria-describedby="alert-dialog-description"
+  >
+    <DialogTitle id="alert-dialog-title">
+    Update the task
+    </DialogTitle>
+    <DialogContent>
+    <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="name"
+            name="email"
+            label= "Enter task title here"
+            fullWidth
+            variant="standard"
+            value={dialogTodo?.title}
+            onChange={(e)=>{
+setDialogTodo({...dialogTodo, title:e.target.value})
+            }}
+          />
+
+<TextField
+            autoFocus
+            required
+            margin="dense"
+            id="name"
+            name="email"
+            label="Enter task details here "
+            fullWidth
+            variant="standard"
+            value={dialogTodo?.details}
+            onChange={(e)=>{
+              setDialogTodo({...dialogTodo, details:e.target.value})
+                          }}
+
+
+          />
+
+
+
+
+    </DialogContent>
+    <DialogActions>
+      {/*Update BUTTON */}
+      <Button onClick={handleUpdateDialogClose}>Closing</Button>
+      <Button onClick={handleUpdateConfirm} autoFocus>
+      Confirm
+      </Button>
+
+        {/*===Update BUTTON */}
+    </DialogActions>
+  </Dialog>
+  {/*update dialog */}
+
+
+
+
+
+
+
+
+
+
   <Container maxWidth="sm">
         <Card sx={{ minWidth: 275 }}style={{maxHeight:"80vh",overflow:"scroll"} }>
       <CardContent>
@@ -176,6 +349,7 @@ setTitleInput(e.target.value)
      
       
     </Card>
-      </Container>)
-    
+      </Container>
+    </>
+  )
 }
