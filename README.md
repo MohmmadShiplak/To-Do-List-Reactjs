@@ -5,7 +5,7 @@
 
 # Features
 
-**Add Tasks**:  Create new todo items with ease
+--Add Tasks--:  Create new todo items with ease
 
 **Update Tasks**: Edit existing tasks to update their content
 
