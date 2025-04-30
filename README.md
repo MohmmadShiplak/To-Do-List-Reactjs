@@ -1,7 +1,7 @@
 
 # TodoApp - ReactJS
 
-## A simple yet powerful Todo application built with ReactJS that allows you to manage your  tasks efficiently. This app includes features like adding, updating, deleting tasks, and  filtering them based on their completion status. All tasks are persisted in the browser's  local storage.
+### A simple yet powerful Todo application built with ReactJS that allows you to manage your  tasks efficiently. This app includes features like adding, updating, deleting tasks, and  filtering them based on their completion status. All tasks are persisted in the browser's  local storage.
 
 # Features
 
@@ -9,7 +9,7 @@
 
 **Update Tasks**: Edit existing tasks to update their content
 
-**Delete Tasks**: Remove tasks you no longer need
+**Delete Tasks** : Remove tasks you no longer need
 
 **Persistent Storage**: All tasks are saved to and retrieved from local storage
 
@@ -23,13 +23,13 @@ Unaccomplished (pending) tasks
 
 # Technologies Used
 
-## ReactJS
+### ReactJS
 
-## React Hooks (useState, useContext, useReducer)
+### React Hooks (useState, useContext, useReducer)
 
-## LocalStorage API
+### LocalStorage API
 
-## Materrial UI 
+### Materrial UI 
 
 # Getting Started with Create React App
 
