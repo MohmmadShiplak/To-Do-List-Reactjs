@@ -5,35 +5,31 @@
 
 # Features
 
-*Add Tasks:*
+**Add Tasks**:  Create new todo items with ease
 
+**Update Tasks**: Edit existing tasks to update their content
 
+**Delete Tasks**: Remove tasks you no longer need
 
+**Persistent Storage**: All tasks are saved to and retrieved from local storage
 
+**Task Filtering**: Filter tasks by:
 
+All tasks
 
+Accomplished (completed) tasks
 
+Unaccomplished (pending) tasks
 
+# Technologies Used
 
+## ReactJS
 
+## React Hooks (useState, useContext, useReducer)
 
+## LocalStorage API
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## Materrial UI 
 
 # Getting Started with Create React App
 
